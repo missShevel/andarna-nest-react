@@ -22,6 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
@@ -32,4 +34,4 @@ jobs:
       - name: Eslint working flow
         run: |
           yarn lint
-          yarn format:check --base=origin/master
+          yarn format:check
