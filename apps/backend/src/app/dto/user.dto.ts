@@ -7,4 +7,5 @@ export class CreateUserDto {
   lastName: string;
   @IsEmail()
   email: string;
+  firebaseId: string;
 }

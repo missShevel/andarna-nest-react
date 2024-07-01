@@ -2,6 +2,7 @@ import { Button, Form, Input } from 'antd';
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function SignUpForm() {
   const [email, setEmail] = useState('');
@@ -19,6 +20,17 @@ export default function SignUpForm() {
       await updateProfile(userCredentials.user, {
         displayName: `${firstname} ${lastname}`,
       });
+      const firebaseCreatedUser = {
+        firstName: firstname,
+        lastName: lastname,
+        email,
+        firebaseId: userCredentials.user.uid,
+      };
+      const response = await axios.post(
+        'http://localhost:3000/api/user',
+        firebaseCreatedUser
+      );
+      console.log(response);
     } catch (e: any) {
       // TODO error handling on the screen
       console.log(e.message);

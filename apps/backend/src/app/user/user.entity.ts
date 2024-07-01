@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -21,6 +21,9 @@ export class User {
   @Column()
   @Index({ unique: true })
   email: string;
+
+  @Column()
+  firebaseId: string;
 
   @CreateDateColumn()
   createdAt: Date;
