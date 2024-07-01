@@ -22,9 +22,6 @@ export class User {
   @Index({ unique: true })
   email: string;
 
-  @Column()
-  paswordHash: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
