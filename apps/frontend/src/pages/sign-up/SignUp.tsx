@@ -3,6 +3,8 @@ import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import axios from 'axios';
+import axiosInstance from '../../axios';
+import { ApiEndpoints } from '../../enum/apiEndpoints';
 
 export default function SignUpForm() {
   const [email, setEmail] = useState('');
@@ -26,8 +28,8 @@ export default function SignUpForm() {
         email,
         firebaseId: userCredentials.user.uid,
       };
-      const response = await axios.post(
-        'http://localhost:3000/api/user',
+      const response = await axiosInstance.post(
+        ApiEndpoints.CREATE_USER,
         firebaseCreatedUser
       );
       console.log(response);
