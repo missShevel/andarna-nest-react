@@ -2,10 +2,13 @@ import { Button, Form, Input } from 'antd';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { signIn as storeSignIn } from '../../features/user/userSlice';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const signIn = async () => {
     try {
       const userCredentials = await signInWithEmailAndPassword(
@@ -14,6 +17,7 @@ export default function SignInForm() {
         password
       );
       console.log(userCredentials);
+      dispatch(storeSignIn(userCredentials));
     } catch (e: any) {
       // TODO error handling on the screen
       console.log(e.message);
