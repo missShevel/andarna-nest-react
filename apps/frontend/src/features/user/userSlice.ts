@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import mapFirebaseUser from '../../utils/firebaseMapper';
 
-const initialState = {
+const initialState: any = {
   user: null,
 };
 
@@ -17,5 +18,7 @@ const userSlice = createSlice({
   },
 });
 
+const userReducer = userSlice.reducer;
+
 export const { signIn, signOut } = userSlice.actions;
-export default userSlice.reducer;
+export default userReducer;
