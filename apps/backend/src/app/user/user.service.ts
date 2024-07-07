@@ -2,8 +2,13 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICreateUser } from '../interface/user.interface';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
+@Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
@@ -23,5 +28,13 @@ export class UserService {
     Object.assign(createdUser, user);
     await this.userRepository.save(createdUser);
     return createdUser;
+  }
+
+  async findOne(id: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 }
