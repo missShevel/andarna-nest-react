@@ -1,7 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
-import mapFirebaseUser from '../../utils/firebaseMapper';
-
-const initialState: any = {
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IUserData } from '../../interface/user';
+interface IInitialState {
+  user: IUserData | null;
+}
+const initialState: IInitialState = {
   user: null,
 };
 
@@ -9,7 +11,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    signIn: (state, action) => {
+    signIn: (state, action: PayloadAction<IUserData>) => {
       state.user = action.payload;
     },
     signOut: (state) => {

@@ -35,6 +35,6 @@ import { FirebaseApp } from './firebase/firebase-app';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(UserController);
+    consumer.apply(AuthMiddleware).forRoutes('*');
   }
 }

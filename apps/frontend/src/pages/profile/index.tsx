@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 
 const ProfilePage = () => {
-  const user = useSelector((state: any) => state.user.user);
+  const user = useAppSelector((state) => state.user.user);
   if (!user) {
     return <div>No user signed in</div>;
   }

@@ -7,12 +7,12 @@ import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBd-Y5L92HFptzWoH3Ts0ceCBhGcy4Ct0M',
-  authDomain: 'andarna-3049f.firebaseapp.com',
-  projectId: 'andarna-3049f',
-  storageBucket: 'andarna-3049f.appspot.com',
-  messagingSenderId: '280639942075',
-  appId: '1:280639942075:web:d6270080ef213b9a29a89e',
+  apiKey: process.env.NX_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NX_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NX_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NX_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NX_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NX_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

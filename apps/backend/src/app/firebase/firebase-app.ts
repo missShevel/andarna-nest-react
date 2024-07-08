@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as firebase from 'firebase-admin';
-import firebaseConfig from '../../firebase.config';
-import firebaseService from '../../../andarna-3049f-firebase-adminsdk-mmopr-b07de8765e.json';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

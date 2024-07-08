@@ -1,7 +1,4 @@
-interface IUserData {
-  fullName: string;
-  email: string;
-}
+import { IUserData } from '../interface/user';
 
 const mapFirebaseUser = (firebaseData: any): IUserData => {
   console.log('firebase user', firebaseData);
