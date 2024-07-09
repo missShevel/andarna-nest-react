@@ -1,17 +1,22 @@
 import { Button, Form, Input } from 'antd';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { signIn as storeSignIn } from '../../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import mapFirebaseUser from '../../utils/firebaseMapper';
 import { useAppDispatch } from '../../app/hooks';
+import { AuthContext } from '../../firebase/AuthProvider';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useAppDispatch();
+  const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
+  if (user) {
+    navigate('/profile');
+  }
+  const dispatch = useAppDispatch();
   const signIn = async () => {
     try {
       const userCredentials = await signInWithEmailAndPassword(
@@ -19,8 +24,8 @@ export default function SignInForm() {
         email,
         password
       );
-      console.log(userCredentials);
-      const serializedUser = mapFirebaseUser(userCredentials);
+
+      const serializedUser = mapFirebaseUser(userCredentials.user);
       dispatch(storeSignIn(serializedUser));
       navigate('/profile');
     } catch (e: any) {
