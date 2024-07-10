@@ -1,37 +1,25 @@
 import { Button, Form, Input } from 'antd';
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useContext, useState } from 'react';
-import { signIn as storeSignIn } from '../../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
-import mapFirebaseUser from '../../utils/firebaseMapper';
-import { useAppDispatch } from '../../app/hooks';
+
 import { AuthContext } from '../../firebase/AuthProvider';
 
 export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, signIn } = useContext(AuthContext);
   const navigate = useNavigate();
   if (user) {
     navigate('/profile');
   }
-  const dispatch = useAppDispatch();
-  const signIn = async () => {
-    try {
-      const userCredentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
 
-      const serializedUser = mapFirebaseUser(userCredentials.user);
-      dispatch(storeSignIn(serializedUser));
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  const handleForm = async () => {
+    signIn(email, password).then((result) => {
       navigate('/profile');
-    } catch (e: any) {
-      // TODO error handling on the screen
-      console.log(e.message);
-    }
+    });
   };
   return (
     <Form
@@ -40,7 +28,7 @@ export default function SignInForm() {
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
-      onFinish={signIn}
+      onFinish={handleForm}
       // onFinishFailed={onFinishFailed}
       autoComplete="on"
     >

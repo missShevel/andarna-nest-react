@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { useContext } from 'react';
 import { AuthContext } from '../../firebase/AuthProvider';
 import mapFirebaseUser from '../../utils/firebaseMapper';
@@ -22,8 +22,8 @@ const ProfilePage = () => {
       .catch((error) => console.error(error));
   };
 
-  if (!user) {
-    return <div>No user signed in</div>;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
