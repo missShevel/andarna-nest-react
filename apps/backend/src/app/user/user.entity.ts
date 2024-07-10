@@ -1,3 +1,4 @@
+import { IUser } from '@andarna/common';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity('users')
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -1,17 +1,16 @@
 import { Button } from 'antd';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useContext } from 'react';
 import { AuthContext } from '../../firebase/AuthProvider';
-import mapFirebaseUser from '../../utils/firebaseMapper';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from '../../features/user/userSlice';
 
 const ProfilePage = () => {
-  const { user, logOut, loading } = useContext(AuthContext);
+  const { logOut, loading } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const mappedUser = mapFirebaseUser(user);
+  const user = useAppSelector((state) => state.user.user);
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -28,7 +27,10 @@ const ProfilePage = () => {
 
   return (
     <>
-      <h1> Welcome to Andarna {mappedUser.fullName}</h1>
+      <h1>
+        {' '}
+        Welcome to Andarna {user?.firstName} {user?.lastName}{' '}
+      </h1>
       <Button type="primary" onClick={handleLogOut}>
         Log out
       </Button>
