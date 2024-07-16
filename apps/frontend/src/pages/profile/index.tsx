@@ -21,9 +21,9 @@ const ProfilePage = () => {
       .catch((error) => console.error(error));
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>

@@ -16,28 +16,28 @@ import PageNotFound from '../pages/404-not-found';
 export function App() {
   const { loading, user } = useContext(AuthContext);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const foo = async () => {
-      if (user) {
-        console.log(user);
-        const { data: userFromDb } = await axiosInstance.get<IUser>(
-          ApiEndpoints.GET_ME,
-          {
-            headers: {
-              Authorization: `Bearer ${await user.getIdToken()}`,
-            },
-          }
-        );
-        dispatch(signIn(userFromDb));
-      }
-    };
-    foo();
-  }, [user]);
+  // useEffect(() => {
+  //   const foo = async () => {
+  //     if (user) {
+  //       console.log(user);
+  //       const { data: userFromDb } = await axiosInstance.get<IUser>(
+  //         ApiEndpoints.GET_ME,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${await user.getIdToken()}`,
+  //           },
+  //         }
+  //       );
+  //       dispatch(signIn(userFromDb));
+  //     }
+  //   };
+  //   foo();
+  // }, [user]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-    //  <Spin spinning={spinning} percent={percent} fullscreen />
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  //   //  <Spin spinning={spinning} percent={percent} fullscreen />
+  // }
   //   const auth = getAuth();
   //   const currentUser = getAuth().currentUser;
   //   console.log(currentUser);
@@ -49,9 +49,9 @@ export function App() {
       <Route
         path="/profile"
         element={
-          <PrivateRoute>
-            <ProfilePage />
-          </PrivateRoute>
+          // <PrivateRoute>
+          <ProfilePage />
+          // </PrivateRoute>
         }
       />
       <Route path="*" element={<PageNotFound />}></Route>

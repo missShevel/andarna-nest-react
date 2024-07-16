@@ -13,9 +13,9 @@ export default function SignInForm() {
     navigate('/profile');
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   const handleForm = async () => {
     signIn(email, password).then((result) => {
       navigate('/profile');
