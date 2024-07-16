@@ -11,6 +11,7 @@ import { signIn } from '../features/user/userSlice';
 import axiosInstance from '../axios';
 import { ApiEndpoints } from '../enum/apiEndpoints';
 import { IUser } from '@andarna/common';
+import PageNotFound from '../pages/404-not-found';
 
 export function App() {
   const { loading, user } = useContext(AuthContext);
@@ -53,6 +54,7 @@ export function App() {
           </PrivateRoute>
         }
       />
+      <Route path="*" element={<PageNotFound />}></Route>
     </Routes>
   );
 }
