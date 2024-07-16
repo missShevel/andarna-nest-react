@@ -1,10 +1,7 @@
 import { Button, Form, Input } from 'antd';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { useState } from 'react';
-import axios from 'axios';
-import axiosInstance from '../../axios';
-import { ApiEndpoints } from '../../enum/apiEndpoints';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../firebase/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUpForm() {
   const [email, setEmail] = useState('');
@@ -12,32 +9,20 @@ export default function SignUpForm() {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const { signUp, loading, user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const authorize = async () => {
-    try {
-      const userCredentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(userCredentials.user, {
-        displayName: `${firstname} ${lastname}`,
-      });
-      const firebaseCreatedUser = {
-        firstName: firstname,
-        lastName: lastname,
-        email,
-        firebaseId: userCredentials.user.uid,
-      };
-      const response = await axiosInstance.post(
-        ApiEndpoints.CREATE_USER,
-        firebaseCreatedUser
-      );
-      console.log(response);
-    } catch (e: any) {
-      // TODO error handling on the screen
-      console.log(e.message);
-    }
+    signUp(email, password, firstname, lastname).then((result) => {
+      navigate('/profile');
+    });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (user) {
+    navigate('/profile');
+  }
   return (
     <Form
       name="basic"
