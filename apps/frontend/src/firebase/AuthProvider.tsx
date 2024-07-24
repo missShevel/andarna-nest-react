@@ -32,7 +32,7 @@ export const AuthContext = createContext<AuthContextType>({} as any);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const signUp = async (
     email: string,
@@ -56,11 +56,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         email,
         firebaseId: userCredentials.user.uid,
       };
-      const response = await axiosInstance.post(
-        ApiEndpoints.CREATE_USER,
-        firebaseCreatedUser
-      );
-      console.log(response);
     } catch (e: any) {
       // TODO error handling on the screen
       console.log(e.message);
@@ -68,6 +63,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (e: any) {
@@ -81,16 +77,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     return signOut(auth);
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-  //     setUser(currentUser);
-  //     setLoading(false);
-  //   });
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const authValue = {
     user,

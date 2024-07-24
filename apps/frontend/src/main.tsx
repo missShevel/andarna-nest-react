@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter, RouterProvider } from 'react-router-dom';
-
+import './global.css';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import App from './app/app';

@@ -12,35 +12,36 @@ import axiosInstance from '../axios';
 import { ApiEndpoints } from '../enum/apiEndpoints';
 import { IUser } from '@andarna/common';
 import PageNotFound from '../pages/404-not-found';
+import SliderLayout from '../components/Layout';
 
 export function App() {
   const { loading, user } = useContext(AuthContext);
   const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   const foo = async () => {
-  //     if (user) {
-  //       console.log(user);
-  //       const { data: userFromDb } = await axiosInstance.get<IUser>(
-  //         ApiEndpoints.GET_ME,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${await user.getIdToken()}`,
-  //           },
-  //         }
-  //       );
-  //       dispatch(signIn(userFromDb));
-  //     }
-  //   };
-  //   foo();
-  // }, [user]);
+  useEffect(() => {
+    const foo = async () => {
+      if (user && !loading) {
+        console.log('app.ts, user fetch', user, loading);
+        console.log(await user.getIdToken());
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  //   //  <Spin spinning={spinning} percent={percent} fullscreen />
-  // }
-  //   const auth = getAuth();
-  //   const currentUser = getAuth().currentUser;
-  //   console.log(currentUser);
+        // const { data: userFromDb } = await axiosInstance.get<IUser>(
+        //   ApiEndpoints.GET_ME,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${await user.getIdToken()}`,
+        //     },
+        //   }
+        // );
+        // dispatch(signIn(userFromDb));
+      }
+    };
+    foo();
+  }, [user]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+    //  <Spin spinning={spinning} percent={percent} fullscreen />
+  }
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
@@ -49,9 +50,9 @@ export function App() {
       <Route
         path="/profile"
         element={
-          // <PrivateRoute>
-          <ProfilePage />
-          // </PrivateRoute>
+          <PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>
         }
       />
       <Route path="*" element={<PageNotFound />}></Route>
