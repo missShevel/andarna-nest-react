@@ -4,44 +4,9 @@ import SignInPage from '../pages/sign-in';
 import ProfilePage from '../pages/profile';
 import HomePage from '../pages/home';
 import PrivateRoute from '../components/PrivateRoute';
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../firebase/AuthProvider';
-import { useAppDispatch } from './hooks';
-import { signIn } from '../features/user/userSlice';
-import axiosInstance from '../axios';
-import { ApiEndpoints } from '../enum/apiEndpoints';
-import { IUser } from '@andarna/common';
 import PageNotFound from '../pages/404-not-found';
-import SliderLayout from '../components/Layout';
 
 export function App() {
-  const { loading, user } = useContext(AuthContext);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    const foo = async () => {
-      if (user && !loading) {
-        console.log('app.ts, user fetch', user, loading);
-        console.log(await user.getIdToken());
-
-        // const { data: userFromDb } = await axiosInstance.get<IUser>(
-        //   ApiEndpoints.GET_ME,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${await user.getIdToken()}`,
-        //     },
-        //   }
-        // );
-        // dispatch(signIn(userFromDb));
-      }
-    };
-    foo();
-  }, [user]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-    //  <Spin spinning={spinning} percent={percent} fullscreen />
-  }
-
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />

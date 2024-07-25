@@ -5,7 +5,7 @@ import { CreateUserDto } from '../dto/user.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CurrentUser } from '../decorators/currentUser.decorator';
 import { UserFromToken } from '../decorators/userFromToken.decorator copy';
-import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
+import { DecodedIdToken } from '../auth/types/decoded-id-token';
 
 @Controller('user')
 export class UserController {

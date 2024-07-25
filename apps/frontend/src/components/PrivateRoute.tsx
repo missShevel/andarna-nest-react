@@ -1,35 +1,22 @@
 import { getAuth } from 'firebase/auth';
 import { ReactNode, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../firebase/AuthProvider';
-import { Spin } from 'antd';
-import mapFirebaseUser from '../utils/firebaseMapper';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { signIn } from '../features/user/userSlice';
-import axiosInstance from '../axios';
 import SliderLayout from './Layout';
+import { AuthContext } from '../firebase/AuthProvider';
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  // const { loading, user } = useContext(AuthContext);
-  const user = useAppSelector((state) => state.user.user);
-  // const dispatch = useAppDispatch();
-  // const { loading, user } = useContext(AuthContext);
+  const { user: authUser, loading: authLoading } = useContext(AuthContext);
+  const { user, isLoading } = useAppSelector((state) => state.user);
 
-  // console.log('aaaaaa', user);
+  if (authLoading || isLoading) return <div>Loading...</div>;
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  const auth = getAuth();
-  const currentUser = getAuth().currentUser;
-  console.log(currentUser);
   if (user) {
     return <SliderLayout>{children}</SliderLayout>;
   }
-
   return <Navigate to="/sign-in" />;
 };
 

@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from '../../features/user/userSlice';
 
 const ProfilePage = () => {
-  const { logOut, loading } = useContext(AuthContext);
+  const { logOut } = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const user = useAppSelector((state) => state.user.user);
+  const { user, isLoading } = useAppSelector((state) => state.user);
   const handleLogOut = () => {
     logOut()
       .then(() => {
@@ -20,10 +20,6 @@ const ProfilePage = () => {
       })
       .catch((error) => console.error(error));
   };
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <>

@@ -3,19 +3,21 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../../firebase/AuthProvider';
+import { useAppSelector } from '../../app/hooks';
 
 export default function SignInForm() {
+  const { isLoading: isUserLoading, user } = useAppSelector(({ user }) => user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, loading, signIn } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  if (isUserLoading) {
+    return <div>Loading...</div>;
+  }
   if (user) {
     navigate('/profile');
   }
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
   const handleForm = async () => {
     signIn(email, password).then((result) => {
       navigate('/profile');
