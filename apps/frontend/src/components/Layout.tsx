@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import AndarnaIcon from '../assets/AndarnaIcon';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 
 interface SliderLayoutProps {
@@ -19,6 +19,7 @@ interface SliderLayoutProps {
 const { Header, Sider, Content } = Layout;
 
 const SliderLayout = ({ children }: SliderLayoutProps) => {
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -27,7 +28,7 @@ const SliderLayout = ({ children }: SliderLayoutProps) => {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <Logo />
+        <Logo onClick={() => navigate('/')} />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1" icon={<HomeOutlined />}>
             <Link to="/">Home</Link>
@@ -60,7 +61,7 @@ const SliderLayout = ({ children }: SliderLayoutProps) => {
           style={{
             margin: '24px 16px',
             padding: 24,
-            minHeight: 280,
+            minHeight: '100vh',
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}

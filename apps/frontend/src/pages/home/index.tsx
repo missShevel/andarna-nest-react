@@ -1,7 +1,7 @@
 const HomePage = () => {
   return (
     <div>
-      <h1>Welcome to ANDARNA</h1>
+      <h1>Welcome to ANDARNA homepage</h1>
     </div>
   );
 };
