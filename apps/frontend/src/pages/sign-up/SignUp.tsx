@@ -2,14 +2,16 @@ import { Button, Form, Input } from 'antd';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../firebase/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 
 export default function SignUpForm() {
+  const { isLoading: isUserLoading, user } = useAppSelector(({ user }) => user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
-  const { signUp, loading, user } = useContext(AuthContext);
+  const { signUp } = useContext(AuthContext);
   const navigate = useNavigate();
   const authorize = async () => {
     signUp(email, password, firstname, lastname).then((result) => {
@@ -17,7 +19,7 @@ export default function SignUpForm() {
     });
   };
 
-  if (loading) {
+  if (isUserLoading) {
     return <div>Loading...</div>;
   }
   if (user) {

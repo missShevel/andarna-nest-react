@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { User } from '../user/user.entity';
-import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
+import { DecodedIdToken } from '../auth/types/decoded-id-token';
 
 export interface ICreateUser {
   firstName: string;

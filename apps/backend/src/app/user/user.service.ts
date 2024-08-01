@@ -7,6 +7,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { getAuth } from 'firebase-admin/auth';
 
 @Injectable()
 export class UserService {
@@ -36,5 +37,22 @@ export class UserService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     return user;
+  }
+
+  async findOrCreate(firebaseId: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ firebaseId });
+    if (user) {
+      return user;
+    }
+    const userFromFirebase = await getAuth().getUser(firebaseId);
+    if (!userFromFirebase) {
+      throw new NotFoundException(`User with ID ${firebaseId} not found`);
+    }
+    return this.create({
+      email: userFromFirebase.email as string,
+      firebaseId,
+      firstName: userFromFirebase.displayName?.split(' ')[0] as string,
+      lastName: userFromFirebase.displayName?.split(' ')[1] as string,
+    });
   }
 }

@@ -10,6 +10,9 @@ import {
 } from 'firebase/auth';
 import axiosInstance from '../axios';
 import { ApiEndpoints } from '../enum/apiEndpoints';
+import { useAppDispatch } from '../app/hooks';
+import { findOrCreateUser } from '../features/user/userSlice';
+import { AppDispatch } from '../app/store';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -33,6 +36,7 @@ export const AuthContext = createContext<AuthContextType>({} as any);
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
 
   const signUp = async (
     email: string,
@@ -40,7 +44,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     firstName: string,
     lastName: string
   ) => {
-    setLoading(true);
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
@@ -50,17 +53,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       await updateProfile(userCredentials.user, {
         displayName: `${firstName} ${lastName}`,
       });
-      const firebaseCreatedUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email,
-        firebaseId: userCredentials.user.uid,
-      };
-      const response = await axiosInstance.post(
-        ApiEndpoints.CREATE_USER,
-        firebaseCreatedUser
-      );
-      console.log(response);
     } catch (e: any) {
       // TODO error handling on the screen
       console.log(e.message);
@@ -77,16 +69,19 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logOut = () => {
-    setLoading(true);
     return signOut(auth);
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+        console.log('authStateChanged', currentUser);
+
+        dispatch(findOrCreateUser(currentUser));
+      }
       setLoading(false);
     });
-
     return () => {
       unsubscribe();
     };
@@ -94,8 +89,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const authValue = {
     user,
-    logOut,
     loading,
+    logOut,
     signUp,
     signIn,
   };
