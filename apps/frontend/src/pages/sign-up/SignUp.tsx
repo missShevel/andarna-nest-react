@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../firebase/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
+import CustomForm from '../../components/CustomForm';
 
 export default function SignUpForm() {
   const { isLoading: isUserLoading, user } = useAppSelector(({ user }) => user);
@@ -26,11 +27,11 @@ export default function SignUpForm() {
     navigate('/profile');
   }
   return (
-    <Form
+    <CustomForm
       name="basic"
+      layout="horizontal"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={authorize}
       // onFinishFailed={onFinishFailed}
@@ -104,6 +105,6 @@ export default function SignUpForm() {
           Register
         </Button>
       </Form.Item>
-    </Form>
+    </CustomForm>
   );
 }
