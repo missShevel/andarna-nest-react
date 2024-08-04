@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../../firebase/AuthProvider';
 import { useAppSelector } from '../../app/hooks';
+import CustomForm from '../../components/CustomForm';
 
 export default function SignInForm() {
   const { isLoading: isUserLoading, user } = useAppSelector(({ user }) => user);
@@ -24,12 +25,11 @@ export default function SignInForm() {
     });
   };
   return (
-    <Form
+    <CustomForm
       name="basic"
+      initialValues={{ remember: true }}
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      initialValues={{ remember: true }}
       onFinish={handleForm}
       // onFinishFailed={onFinishFailed}
       autoComplete="on"
@@ -56,6 +56,6 @@ export default function SignInForm() {
           Sign in
         </Button>
       </Form.Item>
-    </Form>
+    </CustomForm>
   );
 }

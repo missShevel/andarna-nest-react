@@ -1,18 +1,16 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
-import { auth } from '.';
+import { auth, googleAuth } from '.';
 import {
   User,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import axiosInstance from '../axios';
-import { ApiEndpoints } from '../enum/apiEndpoints';
 import { useAppDispatch } from '../app/hooks';
 import { findOrCreateUser } from '../features/user/userSlice';
-import { AppDispatch } from '../app/store';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -29,6 +27,7 @@ interface AuthContextType {
     lastName: string
   ) => Promise<any>;
   logOut: () => Promise<void>;
+  signInWithGoogle: () => Promise<any>;
 }
 
 export const AuthContext = createContext<AuthContextType>({} as any);
@@ -68,6 +67,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleAuth);
+    } catch (e: any) {
+      // TODO error handling on the screen
+      console.log(e.message);
+    }
+  };
+
   const logOut = () => {
     return signOut(auth);
   };
@@ -93,6 +101,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     logOut,
     signUp,
     signIn,
+    signInWithGoogle,
   };
   console.log(authValue);
 
