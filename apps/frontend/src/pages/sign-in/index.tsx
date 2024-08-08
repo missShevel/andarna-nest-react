@@ -9,6 +9,9 @@ export default function SignInPage() {
       <div style={{ margin: 'auto' }}>
         Don't have an account? <Link to="/sign-up">Sign up</Link> here
       </div>
+      <div style={{ margin: 'auto' }}>
+        <Link to="/forgot-password">Forgot password?</Link>
+      </div>
     </div>
   );
 }
