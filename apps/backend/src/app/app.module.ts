@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './auth/middlewares/auth.middleware';
 import { UserController } from './user/user.controller';
 import { FirebaseApp } from './firebase/firebase-app';
+import { Transaction } from './transactions/transactions.entity';
+import { TransactionModule } from './transactions/transaction.module';
 
 @Module({
   imports: [
@@ -28,7 +30,8 @@ import { FirebaseApp } from './firebase/firebase-app';
       inject: [ConfigService],
     }),
     UserModule,
-    TypeOrmModule.forFeature([User]),
+    TransactionModule,
+    TypeOrmModule.forFeature([User, Transaction]),
   ],
   controllers: [AppController],
   providers: [AppService, FirebaseApp],
