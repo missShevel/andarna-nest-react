@@ -24,7 +24,7 @@ import { TransactionModule } from './transactions/transaction.module';
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [User],
+        entities: [User, Transaction],
         synchronize: true,
       }),
       inject: [ConfigService],
