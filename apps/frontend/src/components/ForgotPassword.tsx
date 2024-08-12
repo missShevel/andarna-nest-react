@@ -1,11 +1,13 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, message, Space } from 'antd';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useState } from 'react';
 import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
 
   const emailSentSuccess = () => {
     messageApi.open({
@@ -31,10 +33,11 @@ const ForgotPassword = () => {
       emailSentFail(e.message);
     }
   };
+
   return (
     <div>
       {contextHolder}
-      <h2>Forgont Password</h2>
+      <h2>Forgot Password</h2>
       <Form
         name="resetPassword"
         labelCol={{ span: 8 }}
@@ -58,10 +61,15 @@ const ForgotPassword = () => {
         >
           <Input onChange={(e) => setEmail(e.target.value)} />
         </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Reset password
-          </Button>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Space>
+            <Button type="default" onClick={() => navigate('/login')}>
+              Back to login
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Reset password
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
     </div>
