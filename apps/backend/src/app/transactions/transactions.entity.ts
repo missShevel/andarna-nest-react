@@ -9,30 +9,35 @@ import {
 } from 'typeorm';
 import { ITransaction } from '@andarna/common';
 import { User } from '../user/user.entity';
+import { TransactionCategory } from './enum/types';
 
 @Entity('transactions')
 export class Transaction implements ITransaction {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: TransactionCategory,
+    default: TransactionCategory.CASH,
+  })
   //   @ManyToOne(() => Category, category => category.transactions)
-  type: string;
-  @Column()
+  category: TransactionCategory;
+  @Column({ nullable: true })
   issuer: string;
-  @Column()
+  @Column({ nullable: true })
   ticker: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   buyPrice: number;
 
   @Column({ type: 'varchar', length: 10 })
   currency: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
 
   @Column({ type: 'timestamp' })
@@ -44,7 +49,7 @@ export class Transaction implements ITransaction {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.transactions)
+  @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
   @JoinColumn({ name: 'userId' })
   userId: string;
 }

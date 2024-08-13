@@ -1,6 +1,6 @@
 export interface ITransaction {
   id: string;
-  type: string;
+  category: string;
   issuer?: string;
   ticker?: string;
   amount: number;
