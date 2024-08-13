@@ -13,7 +13,7 @@ import { TransactionCategory } from './enum/types';
 
 @Entity('transactions')
 export class Transaction implements ITransaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
