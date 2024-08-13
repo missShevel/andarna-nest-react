@@ -8,19 +8,19 @@ import { CurrentUser } from '../decorators/currentUser.decorator';
 import { ICreateTransaction } from '../interface/transaction.interface';
 
 @Controller('transaction')
+@UseGuards(AuthGuard)
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
   async create(
     @CurrentUser() user: User,
     @Body() createTransactionDto: CreateTransactionDto
   ): Promise<Transaction> {
     const userId = user.id;
-    const transactionData: ICreateTransaction =
-      Object.assign(createTransactionDto);
-    transactionData.userId = userId;
-    return this.transactionService.create(transactionData);
+    return this.transactionService.create({
+      ...createTransactionDto,
+      user: userId,
+    });
   }
 }

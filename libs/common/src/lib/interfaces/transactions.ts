@@ -10,5 +10,5 @@ export interface ITransaction {
   transactionDate: Date;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
+  // user: string;
 }

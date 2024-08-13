@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { ITransaction } from '@andarna/common';
 import { User } from '../user/user.entity';
-import { TransactionCategory } from './enum/types';
+import { TransactionCategory } from './enum/categories';
 
 @Entity('transactions')
 export class Transaction implements ITransaction {
@@ -50,6 +50,6 @@ export class Transaction implements ITransaction {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
-  @JoinColumn({ name: 'userId' })
-  userId: string;
+  @JoinColumn({ name: 'user' })
+  user: User;
 }

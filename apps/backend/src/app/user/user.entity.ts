@@ -34,6 +34,6 @@ export class User implements IUser {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.userId)
+  @OneToMany(() => Transaction, (transaction) => transaction.user.id)
   transactions: Transaction[];
 }

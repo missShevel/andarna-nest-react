@@ -7,7 +7,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { TransactionCategory } from '../transactions/enum/types';
+import { TransactionCategory } from '../transactions/enum/categories';
 
 export class CreateTransactionDto {
   category: TransactionCategory;

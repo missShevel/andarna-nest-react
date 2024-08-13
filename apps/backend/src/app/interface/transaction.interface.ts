@@ -6,6 +6,6 @@ export interface ICreateTransaction {
   buyPrice?: number;
   currency: string;
   description?: string;
-  transactionDate: Date;
-  userId: string;
+  transactionDate: string;
+  user: string;
 }
