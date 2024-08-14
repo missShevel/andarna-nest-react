@@ -30,7 +30,7 @@ import { TransactionModule } from './transactions/transaction.module';
     }),
     UserModule,
     TransactionModule,
-    TypeOrmModule.forFeature([User, Transaction]),
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
   providers: [AppService, FirebaseApp],

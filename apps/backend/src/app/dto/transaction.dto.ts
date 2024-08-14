@@ -1,6 +1,7 @@
 import {
   IsCurrency,
   IsDateString,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -27,5 +28,33 @@ export class CreateTransactionDto {
   @MaxLength(255)
   description: string;
   @IsDateString()
+  transactionDate: string;
+}
+
+export class UpdateTransactionDto {
+  @IsEnum(TransactionCategory)
+  @IsOptional()
+  category: TransactionCategory;
+  @IsOptional()
+  issuer: string;
+  @IsOptional()
+  ticker: string;
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  amount: number;
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  buyPrice: number;
+  @IsString()
+  @IsOptional()
+  currency: string;
+  @IsString()
+  @MaxLength(255)
+  @IsOptional()
+  description: string;
+  @IsDateString()
+  @IsOptional()
   transactionDate: string;
 }
