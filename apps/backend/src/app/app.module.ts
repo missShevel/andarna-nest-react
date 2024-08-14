@@ -7,8 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './auth/middlewares/auth.middleware';
-import { UserController } from './user/user.controller';
 import { FirebaseApp } from './firebase/firebase-app';
+import { Transaction } from './transactions/transactions.entity';
+import { TransactionModule } from './transactions/transaction.module';
 
 @Module({
   imports: [
@@ -22,12 +23,13 @@ import { FirebaseApp } from './firebase/firebase-app';
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [User],
+        entities: [User, Transaction],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UserModule,
+    TransactionModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],

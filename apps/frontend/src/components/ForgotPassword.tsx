@@ -63,7 +63,7 @@ const ForgotPassword = () => {
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Space>
-            <Button type="default" onClick={() => navigate('/login')}>
+            <Button type="default" onClick={() => navigate('/sign-in')}>
               Back to login
             </Button>
             <Button type="primary" htmlType="submit">
