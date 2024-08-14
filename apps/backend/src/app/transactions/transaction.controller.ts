@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -49,9 +50,12 @@ export class TransactionController {
     @CurrentUser() user: User,
     @Param('id') id: string
   ): Promise<Transaction | null> {
-    return this.transactionService.findById(user.id, id);
+    const transaction = this.transactionService.findById(user.id, id);
+    if (!transaction) {
+      throw new NotFoundException(`transaction with ID ${id} not found`);
+    }
+    return transaction;
   }
-
   @Delete(':id')
   async deleteOne(
     @CurrentUser() user: User,

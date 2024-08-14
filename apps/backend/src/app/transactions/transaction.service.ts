@@ -35,20 +35,17 @@ export class TransactionService {
       user: { id: userId },
       id: transactionId,
     });
-
-    if (!transaction) {
-      throw new NotFoundException(
-        `transaction with ID ${transactionId} not found`
-      );
-    }
     return transaction;
   }
 
   async deleteOne(userId: string, transactionId: string): Promise<void> {
     const transactionToDelete = await this.findById(userId, transactionId);
-    if (transactionToDelete) {
-      this.transactionRepository.remove(transactionToDelete);
+    if (!transactionToDelete) {
+      throw new NotFoundException(
+        `transaction with ID ${transactionId} not found`
+      );
     }
+    this.transactionRepository.remove(transactionToDelete);
   }
 
   async editOne(
@@ -63,7 +60,7 @@ export class TransactionService {
       );
     }
     Object.assign(transactionToEdit, updateData);
-    this.transactionRepository.save(transactionToEdit);
+    await this.transactionRepository.save(transactionToEdit);
     return transactionToEdit;
   }
 }

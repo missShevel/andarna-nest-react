@@ -1,6 +1,13 @@
+export enum TransactionCategory {
+  BONDS = 'bonds',
+  SHARES = 'shares',
+  DIVIDENT = 'divident',
+  CASH = 'cash',
+  CRYPTO = 'crypto',
+}
 export interface ITransaction {
   id: string;
-  category: string;
+  category: TransactionCategory;
   issuer?: string;
   ticker?: string;
   amount: number;

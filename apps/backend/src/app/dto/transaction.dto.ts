@@ -11,6 +11,7 @@ import {
 import { TransactionCategory } from '../transactions/enum/categories';
 
 export class CreateTransactionDto {
+  @IsEnum(TransactionCategory)
   category: TransactionCategory;
   @IsOptional()
   issuer: string;

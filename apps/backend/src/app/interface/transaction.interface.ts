@@ -1,5 +1,7 @@
+import { TransactionCategory } from '../transactions/enum/categories';
+
 export interface ICreateTransaction {
-  category: string;
+  category: TransactionCategory;
   issuer?: string;
   ticker?: string;
   amount: number;
@@ -11,7 +13,7 @@ export interface ICreateTransaction {
 }
 
 export interface IUpdateTransaction {
-  category?: string;
+  category?: TransactionCategory;
   issuer?: string;
   ticker?: string;
   amount?: number;
