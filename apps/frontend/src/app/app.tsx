@@ -6,6 +6,7 @@ import HomePage from '../pages/home';
 import PrivateRoute from '../components/PrivateRoute';
 import PageNotFound from '../pages/404-not-found';
 import ForgotPasswordPage from '../pages/forgot-password';
+import TransactionsPage from '../pages/transactions';
 
 export function App() {
   return (
@@ -28,7 +29,16 @@ export function App() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/transactions"
+        element={
+          <PrivateRoute>
+            <TransactionsPage />
+          </PrivateRoute>
+        }
+      />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
