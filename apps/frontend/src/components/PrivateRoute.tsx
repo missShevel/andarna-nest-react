@@ -1,7 +1,6 @@
-import { getAuth } from 'firebase/auth';
 import { ReactNode, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 import SliderLayout from './Layout';
 import { AuthContext } from '../firebase/AuthProvider';
 

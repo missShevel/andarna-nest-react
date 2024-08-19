@@ -37,7 +37,7 @@ const SliderLayout = ({ children }: SliderLayoutProps) => {
             <Link to="/profile">Profile</Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<CreditCardOutlined />}>
-            <Link to="/">My Savings</Link>
+            <Link to="/transactions">My Transactions</Link>
           </Menu.Item>
           <Menu.Item key="4" icon={<LogoutOutlined />}>
             Log out
