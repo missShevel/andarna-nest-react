@@ -10,10 +10,9 @@ const EditableTable = () => {
   const { user, isLoading: isUserLoading } = useAppSelector(
     (state) => state.user
   );
-  const firebaseUser = auth.currentUser as User;
   useEffect(() => {
     if (user) {
-      dispatch(getAllTransactions(firebaseUser));
+      dispatch(getAllTransactions());
     }
     setLoading(false);
   }, []);

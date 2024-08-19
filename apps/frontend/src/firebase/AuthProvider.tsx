@@ -86,7 +86,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(currentUser);
         console.log('authStateChanged', currentUser);
 
-        dispatch(findOrCreateUser(currentUser));
+        dispatch(findOrCreateUser());
       }
       setLoading(false);
     });

@@ -1,8 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IUser } from '@andarna/common';
-import axiosInstance from '../../axios';
+import { axiosInstanceAuthorized } from '../../axios';
 import { ApiEndpoints } from '../../enum/apiEndpoints';
-import { User } from 'firebase/auth';
 interface IUserInitialState {
   user: IUser | null;
   isLoading: boolean;
@@ -40,16 +39,9 @@ const userSlice = createSlice({
 
 export const findOrCreateUser = createAsyncThunk(
   'users/findOrCreate',
-  async (user: User) => {
-    console.log(await user.getIdToken());
-
-    const { data: userFromDb } = await axiosInstance.get<IUser>(
-      ApiEndpoints.FIND_OR_CREATE_USER,
-      {
-        headers: {
-          Authorization: `Bearer ${await user.getIdToken()}`,
-        },
-      }
+  async () => {
+    const { data: userFromDb } = await axiosInstanceAuthorized.get<IUser>(
+      ApiEndpoints.FIND_OR_CREATE_USER
     );
 
     return userFromDb;

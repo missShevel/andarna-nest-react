@@ -1,8 +1,7 @@
 import { ITransaction } from '@andarna/common';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axiosInstance from '../../axios';
 import { ApiEndpoints } from '../../enum/apiEndpoints';
-import { User } from 'firebase/auth';
+import { axiosInstanceAuthorized } from '../../axios';
 
 interface ITransactionInitialState {
   transactions: ITransaction[] | [];
@@ -38,14 +37,10 @@ const transactionSlice = createSlice({
 
 export const getAllTransactions = createAsyncThunk(
   'transactions/getAll',
-  async (user: User) => {
-    const { data: transactionsFromDb } = await axiosInstance.get<
+  async () => {
+    const { data: transactionsFromDb } = await axiosInstanceAuthorized.get<
       ITransaction[]
-    >(ApiEndpoints.GET_TRANSACTIONS, {
-      headers: {
-        Authorization: `Bearer ${await user.getIdToken()}`,
-      },
-    });
+    >(ApiEndpoints.GET_TRANSACTIONS);
     return transactionsFromDb;
   }
 );
