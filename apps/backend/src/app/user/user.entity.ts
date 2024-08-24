@@ -9,6 +9,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Transaction } from '../transactions/transactions.entity';
+import { Category } from '../outcome_categories/category.entity';
+import { SavingAccount } from '../saving_accounts/savingAccount.entity';
+import { Portfolio } from '../portfolios/portfolio.entity';
 
 @Entity('users')
 export class User implements IUser {
@@ -34,6 +37,12 @@ export class User implements IUser {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user.id)
-  transactions: Transaction[];
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
+
+  @OneToMany(() => SavingAccount, (savingAccount) => savingAccount.user)
+  savingAccounts: SavingAccount[];
+
+  @OneToMany(() => Portfolio, (portfolio) => portfolio.user)
+  portfolios: Portfolio[];
 }

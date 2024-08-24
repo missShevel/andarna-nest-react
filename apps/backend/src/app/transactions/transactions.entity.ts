@@ -7,9 +7,10 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { ITransaction } from '@andarna/common';
+import { Currency, ITransaction, TransactionType } from '@andarna/common';
 import { User } from '../user/user.entity';
-import { TransactionCategory } from './enum/categories';
+import { Portfolio } from '../portfolios/portfolio.entity';
+import { Category } from '../outcome_categories/category.entity';
 
 @Entity('transactions')
 export class Transaction implements ITransaction {
@@ -18,24 +19,22 @@ export class Transaction implements ITransaction {
 
   @Column({
     type: 'enum',
-    enum: TransactionCategory,
-    default: TransactionCategory.CASH,
+    enum: TransactionType,
+    default: TransactionType.INCOME,
   })
-  //   @ManyToOne(() => Category, category => category.transactions)
-  category: TransactionCategory;
-  @Column({ nullable: true })
-  issuer: string;
-  @Column({ nullable: true })
-  ticker: string;
+  type: TransactionType;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'float' })
   amount: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  buyPrice: number;
+  @Column({ type: 'decimal' })
+  initialAmount: number;
 
-  @Column({ type: 'varchar', length: 10 })
-  currency: string;
+  @Column({ type: 'float' })
+  exchangeRate: number;
+
+  @Column({ type: 'enum', enum: Currency, default: Currency.UAH })
+  currency: Currency;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
@@ -49,7 +48,9 @@ export class Transaction implements ITransaction {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.transactions, { nullable: false })
-  @JoinColumn({ name: 'user' })
-  user: User;
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.transactions)
+  portfolio: Portfolio;
+
+  @ManyToOne(() => Category, { nullable: true })
+  category: Category;
 }

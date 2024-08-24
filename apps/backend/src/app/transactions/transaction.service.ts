@@ -21,46 +21,46 @@ export class TransactionService {
     return createdTransaction;
   }
 
-  async findAllByUserId(userId: string): Promise<Transaction[]> {
-    return this.transactionRepository.find({
-      where: { user: { id: userId } },
-    });
-  }
+  // async findAllByUserId(userId: string): Promise<Transaction[]> {
+  //   // return this.transactionRepository.find({
+  //   //   where: { user: { id: userId } },
+  //   // });
+  // }
 
-  async findById(
-    userId: string,
-    transactionId: string
-  ): Promise<Transaction | null> {
-    const transaction = await this.transactionRepository.findOneBy({
-      user: { id: userId },
-      id: transactionId,
-    });
-    return transaction;
-  }
+  // async findById(
+  //   userId: string,
+  //   transactionId: string
+  // ): Promise<Transaction | null> {
+  //   const transaction = await this.transactionRepository.findOneBy({
+  //     user: { id: userId },
+  //     id: transactionId,
+  //   });
+  //   return transaction;
+  // }
 
-  async deleteOne(userId: string, transactionId: string): Promise<void> {
-    const transactionToDelete = await this.findById(userId, transactionId);
-    if (!transactionToDelete) {
-      throw new NotFoundException(
-        `transaction with ID ${transactionId} not found`
-      );
-    }
-    this.transactionRepository.remove(transactionToDelete);
-  }
+  // async deleteOne(userId: string, transactionId: string): Promise<void> {
+  //   const transactionToDelete = await this.findById(userId, transactionId);
+  //   if (!transactionToDelete) {
+  //     throw new NotFoundException(
+  //       `transaction with ID ${transactionId} not found`
+  //     );
+  //   }
+  //   this.transactionRepository.remove(transactionToDelete);
+  // }
 
-  async editOne(
-    userId: string,
-    transactionId: string,
-    updateData: IUpdateTransaction
-  ): Promise<Transaction> {
-    const transactionToEdit = await this.findById(userId, transactionId);
-    if (!transactionToEdit) {
-      throw new NotFoundException(
-        `transaction with ID ${transactionId} not found`
-      );
-    }
-    Object.assign(transactionToEdit, updateData);
-    await this.transactionRepository.save(transactionToEdit);
-    return transactionToEdit;
-  }
+  // async editOne(
+  //   userId: string,
+  //   transactionId: string,
+  //   updateData: IUpdateTransaction
+  // ): Promise<Transaction> {
+  //   const transactionToEdit = await this.findById(userId, transactionId);
+  //   if (!transactionToEdit) {
+  //     throw new NotFoundException(
+  //       `transaction with ID ${transactionId} not found`
+  //     );
+  //   }
+  //   Object.assign(transactionToEdit, updateData);
+  //   await this.transactionRepository.save(transactionToEdit);
+  //   return transactionToEdit;
+  // }
 }
