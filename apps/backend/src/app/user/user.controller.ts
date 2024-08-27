@@ -12,8 +12,10 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
+  async createUserWithPortfolio(
+    @Body() createUserDto: CreateUserDto
+  ): Promise<User> {
+    return this.userService.createUserWithPortfolio(createUserDto);
   }
   @Get('/me')
   @UseGuards(AuthGuard)

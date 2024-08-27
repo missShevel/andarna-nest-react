@@ -13,6 +13,7 @@ import { InvestmentType, IPortfolio, PortfolioType } from '@andarna/common';
 import { User } from '../user/user.entity';
 import { Transaction } from '../transactions/transactions.entity';
 import { PersonalBalance } from '../personal_balances/personalBalance.entity';
+import { IsOptional } from 'class-validator';
 
 @Entity('portfolios')
 export class Portfolio implements IPortfolio {
@@ -38,9 +39,10 @@ export class Portfolio implements IPortfolio {
     default: InvestmentType.CRYPTO,
     nullable: true,
   })
+  @IsOptional()
   investmentType: InvestmentType; // Could be enum type if needed
 
-  @ManyToOne(() => User, (user) => user.portfolios)
+  @ManyToOne(() => User, (user) => user.portfolios, { nullable: false })
   user: User;
 
   @CreateDateColumn()
