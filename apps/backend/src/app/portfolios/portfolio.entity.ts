@@ -36,7 +36,6 @@ export class Portfolio implements IPortfolio {
   @Column({
     type: 'enum',
     enum: InvestmentType,
-    default: InvestmentType.CRYPTO,
     nullable: true,
   })
   @IsOptional()
