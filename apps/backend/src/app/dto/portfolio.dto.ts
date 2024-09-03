@@ -10,3 +10,15 @@ export class CreatePortfolioDto {
   @IsOptional()
   investmentType: InvestmentType;
 }
+
+export class UpdatePortfolioDto {
+  @MaxLength(255)
+  @IsOptional()
+  name: string;
+  @IsEnum(PortfolioType)
+  @IsOptional()
+  type: PortfolioType;
+  @IsEnum(InvestmentType)
+  @IsOptional()
+  investmentType: InvestmentType;
+}

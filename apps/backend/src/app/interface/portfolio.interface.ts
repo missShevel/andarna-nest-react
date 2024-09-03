@@ -7,3 +7,9 @@ export interface ICreatePortfolio {
   investmentType?: InvestmentType;
   user: string;
 }
+
+export interface IUpdatePortfolio {
+  name?: string;
+  type?: PortfolioType;
+  investmentType?: InvestmentType;
+}
