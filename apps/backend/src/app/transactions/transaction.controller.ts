@@ -22,9 +22,10 @@ import {
   ICreateTransaction,
   IUpdateTransaction,
 } from '../interface/transaction.interface';
+import { UserPortfolioGuard } from '../auth/guards/userPortfolio.guard';
 
-@Controller('transaction')
-@UseGuards(AuthGuard)
+@Controller('/portfolio/:portfolioId/transaction')
+@UseGuards(AuthGuard, UserPortfolioGuard)
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 
@@ -40,10 +41,12 @@ export class TransactionController {
   //   });
   // }
 
-  // @Get()
-  // async findAllByUserId(@CurrentUser() user: User): Promise<Transaction[]> {
-  //   return this.transactionService.findAllByUserId(user.id);
-  // }
+  @Get()
+  async findAllByPortfolioId(
+    @Param('portfolioId') portfolioId: string
+  ): Promise<Transaction[]> {
+    return this.transactionService.findAllByPortfolioId(portfolioId);
+  }
 
   // @Get(':id')
   // async findById(

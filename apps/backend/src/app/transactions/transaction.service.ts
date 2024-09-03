@@ -21,11 +21,11 @@ export class TransactionService {
     return createdTransaction;
   }
 
-  // async findAllByUserId(userId: string): Promise<Transaction[]> {
-  //   // return this.transactionRepository.find({
-  //   //   where: { user: { id: userId } },
-  //   // });
-  // }
+  async findAllByPortfolioId(portfolioId: string): Promise<Transaction[]> {
+    return this.transactionRepository.find({
+      where: { portfolio: { id: portfolioId } },
+    });
+  }
 
   // async findById(
   //   userId: string,
