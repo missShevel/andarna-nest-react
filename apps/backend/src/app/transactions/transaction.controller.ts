@@ -18,10 +18,6 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { TransactionService } from './transaction.service';
 import { User } from '../user/user.entity';
 import { CurrentUser } from '../decorators/currentUser.decorator';
-import {
-  ICreateTransaction,
-  IUpdateTransaction,
-} from '../interface/transaction.interface';
 import { UserPortfolioGuard } from '../auth/guards/userPortfolio.guard';
 
 @Controller('/portfolio/:portfolioId/transaction')

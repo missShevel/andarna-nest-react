@@ -25,9 +25,11 @@ export class TransactionService {
     if (!portfolio) {
       throw new NotFoundException(`Portfolio with ID ${portfolioId} not found`);
     }
+    const amount = transactionData.initialAmount * transactionData.exchangeRate;
     const createdTransaction = new Transaction();
     const transaction = {
       ...transactionData,
+      amount,
       portfolio,
     };
     Object.assign(createdTransaction, transaction);
@@ -73,6 +75,11 @@ export class TransactionService {
       throw new NotFoundException(
         `transaction with ID ${transactionId} not found`
       );
+    }
+    if (updateData.initialAmount) {
+      const exchangeRate =
+        updateData.exchangeRate ?? transactionToEdit.exchangeRate;
+      transactionToEdit.amount = updateData.initialAmount * exchangeRate;
     }
     Object.assign(transactionToEdit, updateData);
     await this.transactionRepository.save(transactionToEdit);

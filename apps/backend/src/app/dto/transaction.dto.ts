@@ -7,15 +7,11 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { TransactionCategory } from '../transactions/enum/categories';
 import { Currency, TransactionType } from '@andarna/common';
 
 export class CreateTransactionDto {
   @IsEnum(TransactionType)
   type: TransactionType;
-  @IsNumber()
-  @IsPositive()
-  amount: number;
   @IsNumber()
   @IsPositive()
   initialAmount: number;
@@ -38,10 +34,6 @@ export class UpdateTransactionDto {
   @IsEnum(TransactionType)
   @IsOptional()
   type: TransactionType;
-  @IsNumber()
-  @IsPositive()
-  @IsOptional()
-  amount: number;
   @IsNumber()
   @IsPositive()
   @IsOptional()
