@@ -1,24 +1,22 @@
-import { TransactionCategory } from '../transactions/enum/categories';
+import { Currency, TransactionType } from '@andarna/common';
+import { OutcomeCategory } from '../outcome_categories/outcomeCategory.entity';
 
 export interface ICreateTransaction {
-  category: TransactionCategory;
-  issuer?: string;
-  ticker?: string;
-  amount: number;
-  buyPrice?: number;
-  currency: string;
+  type: TransactionType;
+  initialAmount: number;
+  exchangeRate: number;
+  currency: Currency;
   description?: string;
   transactionDate: string;
-  user: string;
+  outcomeCategory?: OutcomeCategory;
 }
 
 export interface IUpdateTransaction {
-  category?: TransactionCategory;
-  issuer?: string;
-  ticker?: string;
-  amount?: number;
-  buyPrice?: number;
-  currency: string;
+  type?: TransactionType;
+  initialAmount?: number;
+  exchangeRate?: number;
+  currency?: Currency;
   description?: string;
   transactionDate?: string;
+  outcomeCategory?: OutcomeCategory;
 }

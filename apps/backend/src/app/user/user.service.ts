@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ICreateUser } from '../interface/user.interface';
@@ -8,26 +8,44 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { getAuth } from 'firebase-admin/auth';
+import { Portfolio } from '../portfolios/portfolio.entity';
+import { PortfolioType } from '@andarna/common';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Portfolio)
+    private dataSource: DataSource
   ) {}
 
-  async create(user: ICreateUser): Promise<User> {
+  async createUserWithPortfolio(user: ICreateUser): Promise<User> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     const createdUser = new User();
-    const userFromDb = await this.userRepository.findOneBy({
-      email: user.email,
-    });
-    if (userFromDb) {
-      throw new BadRequestException(
-        `User with email ${user.email} already exists`
-      );
+    const createdPortfolio = new Portfolio();
+    try {
+      Object.assign(createdUser, user);
+      Object.assign(createdPortfolio, {
+        name: 'Personal Portfolio',
+        lastOpenedAt: new Date(),
+        type: PortfolioType.PERSONAL,
+        user: createdUser,
+      });
+
+      await queryRunner.manager.save(createdUser);
+      await queryRunner.manager.save(createdPortfolio);
+      console.log('create user with portfolio');
+
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    Object.assign(createdUser, user);
-    await this.userRepository.save(createdUser);
     return createdUser;
   }
 
@@ -48,7 +66,7 @@ export class UserService {
     if (!userFromFirebase) {
       throw new NotFoundException(`User with ID ${firebaseId} not found`);
     }
-    return this.create({
+    return this.createUserWithPortfolio({
       email: userFromFirebase.email as string,
       firebaseId,
       firstName: userFromFirebase.displayName?.split(' ')[0] as string,

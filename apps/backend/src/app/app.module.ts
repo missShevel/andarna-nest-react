@@ -10,6 +10,14 @@ import { AuthMiddleware } from './auth/middlewares/auth.middleware';
 import { FirebaseApp } from './firebase/firebase-app';
 import { Transaction } from './transactions/transactions.entity';
 import { TransactionModule } from './transactions/transaction.module';
+import { OutcomeCategoryModule } from './outcome_categories/outcomeCategory.module';
+import { PersonalBalance } from './personal_balances/personalBalance.entity';
+import { PersonalBalanceModule } from './personal_balances/personalBalance.module';
+import { PortfolioModule } from './portfolios/portfolio.module';
+import { Portfolio } from './portfolios/portfolio.entity';
+import { SavingAccount } from './saving_accounts/savingAccount.entity';
+import { SavingAccountModule } from './saving_accounts/savingAccount.module';
+import { OutcomeCategory } from './outcome_categories/outcomeCategory.entity';
 
 @Module({
   imports: [
@@ -23,13 +31,24 @@ import { TransactionModule } from './transactions/transaction.module';
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [User, Transaction],
+        entities: [
+          User,
+          Transaction,
+          OutcomeCategory,
+          PersonalBalance,
+          Portfolio,
+          SavingAccount,
+        ],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UserModule,
     TransactionModule,
+    OutcomeCategoryModule,
+    PersonalBalanceModule,
+    PortfolioModule,
+    SavingAccountModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],

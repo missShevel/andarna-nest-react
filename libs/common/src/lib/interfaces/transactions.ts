@@ -1,21 +1,20 @@
-export enum TransactionCategory {
-  BONDS = 'bonds',
-  SHARES = 'shares',
-  DIVIDENT = 'divident',
-  CASH = 'cash',
-  CRYPTO = 'crypto',
+import { Currency } from '../enum/currency';
+
+export enum TransactionType {
+  INCOME = 'income',
+  OUTCOME = 'outcome',
+  SAVINGS = 'savings',
+  INVESTMENT = 'investment',
 }
 export interface ITransaction {
   id: string;
-  category: TransactionCategory;
-  issuer?: string;
-  ticker?: string;
-  amount: number;
-  buyPrice?: number;
-  currency: string;
+  type: TransactionType;
+  initialAmount: number;
+  currency: Currency;
+  exchangeRate: number;
   description?: string;
   transactionDate: Date;
+  amount: number;
   createdAt: Date;
   updatedAt: Date;
-  // user: string;
 }

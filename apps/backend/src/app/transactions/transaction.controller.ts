@@ -18,58 +18,67 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { TransactionService } from './transaction.service';
 import { User } from '../user/user.entity';
 import { CurrentUser } from '../decorators/currentUser.decorator';
-import {
-  ICreateTransaction,
-  IUpdateTransaction,
-} from '../interface/transaction.interface';
+import { UserPortfolioGuard } from '../auth/guards/userPortfolio.guard';
 
-@Controller('transaction')
-@UseGuards(AuthGuard)
+@Controller('/portfolio/:portfolioId/transaction')
+@UseGuards(AuthGuard, UserPortfolioGuard)
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 
   @Post()
-  async create(
+  async createTransaction(
     @CurrentUser() user: User,
+    @Param('portfolioId') portfolioId: string,
     @Body() createTransactionDto: CreateTransactionDto
   ): Promise<Transaction> {
-    const userId = user.id;
-    return this.transactionService.create({
-      ...createTransactionDto,
-      user: userId,
-    });
+    return this.transactionService.create(
+      portfolioId,
+      user.id,
+      createTransactionDto
+    );
   }
 
   @Get()
-  async findAllByUserId(@CurrentUser() user: User): Promise<Transaction[]> {
-    return this.transactionService.findAllByUserId(user.id);
+  async findAllTransactionsByPortfolioId(
+    @Param('portfolioId') portfolioId: string
+  ): Promise<Transaction[]> {
+    return this.transactionService.findAllByPortfolioId(portfolioId);
   }
 
-  @Get(':id')
-  async findById(
-    @CurrentUser() user: User,
-    @Param('id') id: string
-  ): Promise<Transaction | null> {
-    const transaction = this.transactionService.findById(user.id, id);
+  @Get(':transactionId')
+  async findOneTransactionById(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string
+  ): Promise<Transaction> {
+    const transaction = await this.transactionService.findOne(
+      transactionId,
+      portfolioId
+    );
     if (!transaction) {
-      throw new NotFoundException(`transaction with ID ${id} not found`);
+      throw new NotFoundException(
+        `Transaction with ID ${transactionId} not found for Portfolio ${portfolioId}`
+      );
     }
     return transaction;
   }
-  @Delete(':id')
-  async deleteOne(
-    @CurrentUser() user: User,
-    @Param('id') id: string
+  @Delete(':transactionId')
+  async deleteTransaction(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string
   ): Promise<void> {
-    this.transactionService.deleteOne(user.id, id);
+    this.transactionService.deleteOne(transactionId, portfolioId);
   }
 
-  @Put(':id')
-  async editOne(
-    @CurrentUser() user: User,
-    @Param('id') transactionId: string,
+  @Put(':transactionId')
+  async editTransaction(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string,
     @Body() updatedData: UpdateTransactionDto
   ): Promise<Transaction> {
-    return this.transactionService.editOne(user.id, transactionId, updatedData);
+    return this.transactionService.editOne(
+      transactionId,
+      portfolioId,
+      updatedData
+    );
   }
 }
