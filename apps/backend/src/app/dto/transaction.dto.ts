@@ -1,5 +1,4 @@
 import {
-  IsCurrency,
   IsDateString,
   IsEnum,
   IsNumber,
@@ -9,37 +8,36 @@ import {
   MaxLength,
 } from 'class-validator';
 import { TransactionCategory } from '../transactions/enum/categories';
+import { Currency, TransactionType } from '@andarna/common';
 
 export class CreateTransactionDto {
-  @IsEnum(TransactionCategory)
-  category: TransactionCategory;
-  @IsOptional()
-  issuer: string;
-  @IsOptional()
-  ticker: string;
+  @IsEnum(TransactionType)
+  type: TransactionType;
   @IsNumber()
   @IsPositive()
   amount: number;
   @IsNumber()
   @IsPositive()
-  buyPrice: number;
-  @IsString()
-  currency: string;
+  initialAmount: number;
+  @IsNumber()
+  @IsPositive()
+  exchangeRate: number;
+  @IsEnum(Currency)
+  currency: Currency;
   @IsString()
   @MaxLength(255)
+  @IsOptional()
   description: string;
   @IsDateString()
   transactionDate: string;
+  @IsOptional()
+  outcomeCategoryId: string;
 }
 
 export class UpdateTransactionDto {
-  @IsEnum(TransactionCategory)
+  @IsEnum(TransactionType)
   @IsOptional()
-  category: TransactionCategory;
-  @IsOptional()
-  issuer: string;
-  @IsOptional()
-  ticker: string;
+  type: TransactionType;
   @IsNumber()
   @IsPositive()
   @IsOptional()
@@ -47,10 +45,14 @@ export class UpdateTransactionDto {
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  buyPrice: number;
-  @IsString()
+  initialAmount: number;
+  @IsNumber()
+  @IsPositive()
   @IsOptional()
-  currency: string;
+  exchangeRate: number;
+  @IsEnum(Currency)
+  @IsOptional()
+  currency: Currency;
   @IsString()
   @MaxLength(255)
   @IsOptional()
@@ -58,4 +60,6 @@ export class UpdateTransactionDto {
   @IsDateString()
   @IsOptional()
   transactionDate: string;
+  @IsOptional()
+  outcomeCategoryId: string;
 }

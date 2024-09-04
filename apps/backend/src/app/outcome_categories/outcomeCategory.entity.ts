@@ -5,13 +5,12 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { IOutcomeCategory } from '@andarna/common';
 
-@Entity('categories')
-export class Category implements IOutcomeCategory {
+@Entity('outcome_categories')
+export class OutcomeCategory implements IOutcomeCategory {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -29,50 +29,60 @@ import { UserPortfolioGuard } from '../auth/guards/userPortfolio.guard';
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
 
-  // @Post()
-  // async create(
-  //   @CurrentUser() user: User,
-  //   @Body() createTransactionDto: CreateTransactionDto
-  // ): Promise<Transaction> {
-  //   const userId = user.id;
-  //   return this.transactionService.create({
-  //     ...createTransactionDto,
-  //     user: userId,
-  //   });
-  // }
+  @Post()
+  async createTransaction(
+    @CurrentUser() user: User,
+    @Param('portfolioId') portfolioId: string,
+    @Body() createTransactionDto: CreateTransactionDto
+  ): Promise<Transaction> {
+    return this.transactionService.create(
+      portfolioId,
+      user.id,
+      createTransactionDto
+    );
+  }
 
   @Get()
-  async findAllByPortfolioId(
+  async findAllTransactionsByPortfolioId(
     @Param('portfolioId') portfolioId: string
   ): Promise<Transaction[]> {
     return this.transactionService.findAllByPortfolioId(portfolioId);
   }
 
-  // @Get(':id')
-  // async findById(
-  //   @CurrentUser() user: User,
-  //   @Param('id') id: string
-  // ): Promise<Transaction | null> {
-  //   const transaction = this.transactionService.findById(user.id, id);
-  //   if (!transaction) {
-  //     throw new NotFoundException(`transaction with ID ${id} not found`);
-  //   }
-  //   return transaction;
-  // }
-  // @Delete(':id')
-  // async deleteOne(
-  //   @CurrentUser() user: User,
-  //   @Param('id') id: string
-  // ): Promise<void> {
-  //   this.transactionService.deleteOne(user.id, id);
-  // }
+  @Get(':transactionId')
+  async findOneTransactionById(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string
+  ): Promise<Transaction> {
+    const transaction = await this.transactionService.findOne(
+      transactionId,
+      portfolioId
+    );
+    if (!transaction) {
+      throw new NotFoundException(
+        `Transaction with ID ${transactionId} not found for Portfolio ${portfolioId}`
+      );
+    }
+    return transaction;
+  }
+  @Delete(':transactionId')
+  async deleteTransaction(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string
+  ): Promise<void> {
+    this.transactionService.deleteOne(transactionId, portfolioId);
+  }
 
-  // @Put(':id')
-  // async editOne(
-  //   @CurrentUser() user: User,
-  //   @Param('id') transactionId: string,
-  //   @Body() updatedData: UpdateTransactionDto
-  // ): Promise<Transaction> {
-  //   return this.transactionService.editOne(user.id, transactionId, updatedData);
-  // }
+  @Put(':transactionId')
+  async editTransaction(
+    @Param('portfolioId') portfolioId: string,
+    @Param('transactionId') transactionId: string,
+    @Body() updatedData: UpdateTransactionDto
+  ): Promise<Transaction> {
+    return this.transactionService.editOne(
+      transactionId,
+      portfolioId,
+      updatedData
+    );
+  }
 }

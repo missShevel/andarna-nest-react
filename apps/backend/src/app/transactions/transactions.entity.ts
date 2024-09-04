@@ -10,7 +10,7 @@ import {
 import { Currency, ITransaction, TransactionType } from '@andarna/common';
 import { User } from '../user/user.entity';
 import { Portfolio } from '../portfolios/portfolio.entity';
-import { Category } from '../outcome_categories/category.entity';
+import { OutcomeCategory } from '../outcome_categories/outcomeCategory.entity';
 
 @Entity('transactions')
 export class Transaction implements ITransaction {
@@ -51,6 +51,6 @@ export class Transaction implements ITransaction {
   @ManyToOne(() => Portfolio, (portfolio) => portfolio.transactions)
   portfolio: Portfolio;
 
-  @ManyToOne(() => Category, { nullable: true })
-  category: Category;
+  @ManyToOne(() => OutcomeCategory, { nullable: true })
+  outcomeCategory: OutcomeCategory;
 }
