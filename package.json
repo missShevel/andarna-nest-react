@@ -6,7 +6,9 @@
     "lint": "nx run-many --all --target=lint",
     "format:check": "nx format:check",
     "format:fix": "nx format:write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "seed:create": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:create -r apps/backend/src/app/database/seeds --name",
+    "seed:run": "nx seed:run backend"
   },
   "private": true,
   "dependencies": {
@@ -31,8 +33,10 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "styled-components": "^6.1.11",
+    "tsconfig-paths": "^4.2.0",
     "tslib": "^2.3.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "typeorm-extension": "^3.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.5",
