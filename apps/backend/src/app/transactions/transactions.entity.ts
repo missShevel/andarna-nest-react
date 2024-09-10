@@ -37,7 +37,7 @@ export class Transaction implements ITransaction {
   currency: Currency;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  description: string;
+  description?: string | null;
 
   @Column({ type: 'timestamp' })
   transactionDate: Date;
@@ -52,5 +52,5 @@ export class Transaction implements ITransaction {
   portfolio: Portfolio;
 
   @ManyToOne(() => OutcomeCategory, { nullable: true })
-  outcomeCategory: OutcomeCategory;
+  outcomeCategory: OutcomeCategory | null;
 }

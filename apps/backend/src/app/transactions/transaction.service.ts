@@ -7,13 +7,16 @@ import {
   IUpdateTransaction,
 } from '../interface/transaction.interface';
 import { PortfolioService } from '../portfolios/portfolio.service';
+import { TransactionType } from '@andarna/common';
+import { OutcomeCategoryService } from '../outcome_categories/outcomeCategory.service';
 
 @Injectable()
 export class TransactionService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
-    private portfolioService: PortfolioService
+    private portfolioService: PortfolioService,
+    private outcomeCategoryService: OutcomeCategoryService
   ) {}
 
   async create(
@@ -27,11 +30,30 @@ export class TransactionService {
     }
     const amount = transactionData.initialAmount * transactionData.exchangeRate;
     const createdTransaction = new Transaction();
-    const transaction = {
+    const transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'> = {
       ...transactionData,
       amount,
       portfolio,
+      transactionDate: new Date(transactionData.transactionDate),
+      outcomeCategory: null,
     };
+    console.log(transactionData);
+
+    if (
+      transactionData.type === TransactionType.OUTCOME &&
+      transactionData.outcomeCategoryId
+    ) {
+      const verifiedCategory = await this.outcomeCategoryService.verifyCategory(
+        userId,
+        transactionData.outcomeCategoryId
+      );
+      if (!verifiedCategory) {
+        throw new NotFoundException(
+          `Category with ID ${transactionData.outcomeCategoryId} not found`
+        );
+      }
+      transaction.outcomeCategory = verifiedCategory;
+    }
     Object.assign(createdTransaction, transaction);
 
     await this.transactionRepository.save(createdTransaction);

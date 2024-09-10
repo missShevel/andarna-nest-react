@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { OutcomeCategoryService } from './outcomneCategory.service';
+import { OutcomeCategoryService } from './outcomeCategory.service';
 import { OutcomeCategory } from './outcomeCategory.entity';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CurrentUser } from '../decorators/currentUser.decorator';

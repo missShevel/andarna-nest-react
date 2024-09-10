@@ -23,10 +23,23 @@ export class OutcomeCategoryService {
 
   async findAll(userId: string): Promise<OutcomeCategory[]> {
     const customCategories = await this.outcomeCategoryRepository.find({
-      where: { user: { id: userId } },
+      where: [{ user: { id: userId } }, { user: IsNull() }],
     });
-    const standardCategories = await this.findStandardCategories();
-    return [...customCategories, ...standardCategories];
+    // const standardCategories = await this.findStandardCategories();
+    return customCategories;
+  }
+
+  async verifyCategory(
+    userId: string,
+    categoryId: string
+  ): Promise<OutcomeCategory | null> {
+    const verifiedCategory = await this.outcomeCategoryRepository.findOne({
+      where: [
+        { user: { id: userId }, id: categoryId },
+        { user: IsNull(), id: categoryId },
+      ],
+    });
+    return verifiedCategory;
   }
 
   async findOne(id: string, userId: string): Promise<OutcomeCategory | null> {
