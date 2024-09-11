@@ -20,7 +20,25 @@ services:
       PGADMIN_DEFAULT_PASSWORD: 123456
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+  redis:
+    image: redis:latest
+    container_name: redis_store
+    environment:
+      - REDIS_PASSWORD=123456
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - "5540:5540" # Port for RedisInsight UI
+    depends_on:
+      - redis
+
 
 volumes:
   postgres-data:
   pgadmin-data:
+  redis-data:
