@@ -63,6 +63,9 @@ export class TransactionService {
   async findAllByPortfolioId(portfolioId: string): Promise<Transaction[]> {
     return this.transactionRepository.find({
       where: { portfolio: { id: portfolioId } },
+      relations: {
+        outcomeCategory: true,
+      },
     });
   }
 
@@ -70,9 +73,14 @@ export class TransactionService {
     transactionId: string,
     portfolioId: string
   ): Promise<Transaction | null> {
-    const transaction = await this.transactionRepository.findOneBy({
-      portfolio: { id: portfolioId },
-      id: transactionId,
+    const transaction = await this.transactionRepository.findOne({
+      where: {
+        portfolio: { id: portfolioId },
+        id: transactionId,
+      },
+      relations: {
+        outcomeCategory: true,
+      },
     });
     return transaction;
   }
@@ -90,7 +98,8 @@ export class TransactionService {
   async editOne(
     transactionId: string,
     portfolioId: string,
-    updateData: IUpdateTransaction
+    userId: string,
+    transactionData: IUpdateTransaction
   ): Promise<Transaction> {
     const transactionToEdit = await this.findOne(transactionId, portfolioId);
     if (!transactionToEdit) {
@@ -98,13 +107,41 @@ export class TransactionService {
         `transaction with ID ${transactionId} not found`
       );
     }
-    if (updateData.initialAmount) {
+    const transactionUpdateData: Partial<Transaction> = {
+      ...transactionData,
+      transactionDate: new Date(
+        transactionData.transactionDate || transactionToEdit.transactionDate
+      ),
+      outcomeCategory: transactionToEdit.outcomeCategory,
+    };
+    Object.assign(transactionToEdit, transactionUpdateData);
+    if (transactionData.initialAmount) {
       const exchangeRate =
-        updateData.exchangeRate ?? transactionToEdit.exchangeRate;
-      transactionToEdit.amount = updateData.initialAmount * exchangeRate;
+        transactionData.exchangeRate ?? transactionToEdit.exchangeRate;
+      transactionToEdit.amount = transactionData.initialAmount * exchangeRate;
     }
-    Object.assign(transactionToEdit, updateData);
-    await this.transactionRepository.save(transactionToEdit);
-    return transactionToEdit;
+    if (transactionToEdit.type !== TransactionType.OUTCOME) {
+      console.log(1);
+
+      transactionToEdit.outcomeCategory = null;
+    }
+    if (
+      transactionToEdit.type === TransactionType.OUTCOME &&
+      transactionData.outcomeCategoryId &&
+      transactionToEdit.outcomeCategory?.id !==
+        transactionData.outcomeCategoryId
+    ) {
+      const verifiedCategory = await this.outcomeCategoryService.verifyCategory(
+        userId,
+        transactionData.outcomeCategoryId
+      );
+      if (!verifiedCategory) {
+        throw new NotFoundException(
+          `Category with ID ${transactionData.outcomeCategoryId} not found`
+        );
+      }
+      transactionToEdit.outcomeCategory = verifiedCategory;
+    }
+    return await this.transactionRepository.save(transactionToEdit);
   }
 }
