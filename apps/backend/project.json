@@ -19,6 +19,13 @@
           "buildTarget": "backend:build:production"
         }
       }
+    },
+    "seed:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/backend",
+        "command": "ts-node  -r tsconfig-paths/register -P ./tsconfig.app.json ../../node_modules/typeorm-extension/bin/cli.cjs seed:run -d src/app/database/datasource.ts"
+      }
     }
   }
 }

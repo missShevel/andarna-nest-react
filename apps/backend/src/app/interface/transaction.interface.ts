@@ -8,7 +8,7 @@ export interface ICreateTransaction {
   currency: Currency;
   description?: string;
   transactionDate: string;
-  outcomeCategory?: OutcomeCategory;
+  outcomeCategoryId?: string;
 }
 
 export interface IUpdateTransaction {
@@ -18,5 +18,5 @@ export interface IUpdateTransaction {
   currency?: Currency;
   description?: string;
   transactionDate?: string;
-  outcomeCategory?: OutcomeCategory;
+  outcomeCategoryId?: string;
 }

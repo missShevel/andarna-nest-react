@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
   MaxLength,
 } from 'class-validator';
 import { Currency, TransactionType } from '@andarna/common';
@@ -26,6 +27,7 @@ export class CreateTransactionDto {
   description: string;
   @IsDateString()
   transactionDate: string;
+  @IsUUID()
   @IsOptional()
   outcomeCategoryId: string;
 }
@@ -52,6 +54,7 @@ export class UpdateTransactionDto {
   @IsDateString()
   @IsOptional()
   transactionDate: string;
+  @IsUUID()
   @IsOptional()
   outcomeCategoryId: string;
 }

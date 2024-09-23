@@ -12,7 +12,7 @@ export interface ITransaction {
   initialAmount: number;
   currency: Currency;
   exchangeRate: number;
-  description?: string;
+  description?: string | null;
   transactionDate: Date;
   amount: number;
   createdAt: Date;

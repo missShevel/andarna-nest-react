@@ -71,6 +71,7 @@ export class TransactionController {
 
   @Put(':transactionId')
   async editTransaction(
+    @CurrentUser() user: User,
     @Param('portfolioId') portfolioId: string,
     @Param('transactionId') transactionId: string,
     @Body() updatedData: UpdateTransactionDto
@@ -78,6 +79,7 @@ export class TransactionController {
     return this.transactionService.editOne(
       transactionId,
       portfolioId,
+      user.id,
       updatedData
     );
   }

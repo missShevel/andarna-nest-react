@@ -20,7 +20,7 @@ export class OutcomeCategory implements IOutcomeCategory {
   @Column({ type: 'varchar', length: 7 }) // Assuming color is a hex code
   color: string;
 
-  @ManyToOne(() => User, (user) => user.categories)
+  @ManyToOne(() => User, (user) => user.categories, { nullable: true })
   user: User;
 
   @CreateDateColumn()

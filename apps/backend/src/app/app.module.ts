@@ -18,10 +18,13 @@ import { Portfolio } from './portfolios/portfolio.entity';
 import { SavingAccount } from './saving_accounts/savingAccount.entity';
 import { SavingAccountModule } from './saving_accounts/savingAccount.module';
 import { OutcomeCategory } from './outcome_categories/outcomeCategory.entity';
+import { ExchangeNbuModule } from './exchangeNbuApi/exchangeNbu.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    RedisModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -49,6 +52,7 @@ import { OutcomeCategory } from './outcome_categories/outcomeCategory.entity';
     PersonalBalanceModule,
     PortfolioModule,
     SavingAccountModule,
+    ExchangeNbuModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
